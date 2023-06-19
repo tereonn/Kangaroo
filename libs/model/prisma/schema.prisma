@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "mysql"
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum PartReqStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum RaceResult {
+  WIN
+  LOOSE
+  DRAW
+}
+
+model User {
+  id                   Int                    @id @default(autoincrement())
+  login                String                 @unique()
+  pass                 String
+  Car                  Car[]
+  role                 Role
+  ParticipationRequest ParticipationRequest[]
+}
+
+model Car {
+  id                   Int                    @id @default(autoincrement())
+  desc                 String
+  ownerId              User                   @relation(fields: [userId], references: [id])
+  userId               Int
+  removed              Boolean
+  ParticipationRequest ParticipationRequest[]
+  RaceGrid             RaceGrid[]
+}
+
+model Season {
+  id    Int     @id @default(autoincrement())
+  desc  String
+  Stage Stage[]
+}
+
+model Stage {
+  id                   Int                    @id @default(autoincrement())
+  season               Season                 @relation(fields: [seasonId], references: [id])
+  seasonId             Int
+  desc                 String
+  events_blocked       Boolean
+  ParticipationRequest ParticipationRequest[]
+  Race                 Race[]
+}
+
+model ParticipationRequest {
+  id       Int           @id @default(autoincrement())
+  user     User          @relation(fields: [userId], references: [id])
+  car      Car?          @relation(fields: [carId], references: [id])
+  stage    Stage         @relation(fields: [stageId], references: [id])
+  status   PartReqStatus
+  userId   Int
+  carId    Int?
+  stageId  Int
+  RaceGrid RaceGrid[]
+}
+
+model Race {
+  id       Int        @id @default(autoincrement())
+  stage    Stage      @relation(fields: [stageId], references: [id])
+  stageId  Int
+  RaceGrid RaceGrid[]
+  phase    Int
+}
+
+model RaceGrid {
+  id                     Int                  @id @default(autoincrement())
+  race                   Race                 @relation(fields: [raceId], references: [id])
+  member                 ParticipationRequest @relation(fields: [participationRequestId], references: [id])
+  car                    Car?                 @relation(fields: [carId], references: [id])
+  points                 Int?
+  result                 RaceResult?
+  raceId                 Int
+  participationRequestId Int
+  carId                  Int?
+}

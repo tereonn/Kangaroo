@@ -1,0 +1,68 @@
+{
+  "name": "model",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/model/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/model",
+        "main": "libs/model/src/index.ts",
+        "tsConfig": "libs/model/tsconfig.lib.json",
+        "assets": ["libs/model/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/model/**/*.ts"]
+      }
+    },
+    "prisma-generate": {
+      "executor": "@nx-tools/nx-prisma:generate",
+      "options": {
+        "schema": "libs/model/prisma/schema.prisma"
+      }
+    },
+    "prisma-migrate": {
+      "executor": "@nx-tools/nx-prisma:migrate",
+      "options": {
+        "schema": "libs/model/prisma/schema.prisma"
+      }
+    },
+    "prisma-pull": {
+      "executor": "@nx-tools/nx-prisma:pull",
+      "options": {
+        "schema": "libs/model/prisma/schema.prisma"
+      }
+    },
+    "prisma-push": {
+      "executor": "@nx-tools/nx-prisma:push",
+      "options": {
+        "schema": "libs/model/prisma/schema.prisma"
+      }
+    },
+    "prisma-deploy": {
+      "executor": "@nx-tools/nx-prisma:deploy",
+      "options": {
+        "schema": "libs/model/prisma/schema.prisma"
+      }
+    },
+    "prisma-status": {
+      "executor": "@nx-tools/nx-prisma:status",
+      "options": {
+        "schema": "libs/model/prisma/schema.prisma"
+      }
+    },
+    "prisma-studio": {
+      "executor": "@nx-tools/nx-prisma:studio",
+      "options": {
+        "schema": "libs/model/prisma/schema.prisma"
+      }
+    }
+  },
+  "tags": []
+}
