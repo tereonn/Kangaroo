@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { AuthModule } from '../auth/auth.module';
 import { RouterModule } from '@nestjs/core';
+import { SeasonDataModule } from '../season-data/season-data.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { RouterModule } from '@nestjs/core';
         module: AuthModule,
       },
     ]),
+    SeasonDataModule,
   ],
   controllers: [],
   providers: [],

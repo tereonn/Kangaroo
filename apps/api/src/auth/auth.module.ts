@@ -5,21 +5,21 @@ import { ModelModule } from '@kangaroo/model';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
+const jwtModule = () =>
+  JwtModule.registerAsync({
+    imports: [ConfigModule],
+    useFactory: async (config: ConfigService) => ({
+      secret: config.get<string>('JWT_SECRET'),
+      signOptions: {
+        expiresIn: '3h',
+      },
+    }),
+    inject: [ConfigService],
+  });
+
 @Module({
   providers: [AuthService],
   controllers: [AuthController],
-  imports: [
-    ModelModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET'),
-        signOptions: {
-          expiresIn: '3h',
-        },
-      }),
-      inject: [ConfigService],
-    }),
-  ],
+  imports: [ModelModule, jwtModule()],
 })
 export class AuthModule {}

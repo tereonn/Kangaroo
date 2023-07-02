@@ -18,8 +18,8 @@ export class AuthService {
   async createUser(data: RegisterRequestDto): Promise<AuthResponseDto> {
     const newUser = await this.userModelService.createUser({
       login: data.email,
-      pass: await this.hash(data.pass),
-      role: 'USER',
+      password: await this.hash(data.pass),
+      bio: data.bio,
     });
 
     return {
@@ -33,7 +33,7 @@ export class AuthService {
       this.hash(data.pass),
     ]);
 
-    if (user === null || user.pass !== hashed) {
+    if (user === null || user.password !== hashed) {
       throw new UnauthorizedException();
     }
 

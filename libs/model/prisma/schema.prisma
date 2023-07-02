@@ -7,86 +7,33 @@ datasource db {
   provider = "mysql"
 }
 
-enum Role {
-  ADMIN
-  USER
-}
-
-enum PartReqStatus {
+enum UserStatus {
+  APPROVED
+  DECLINED
   PENDING
-  ACCEPTED
-  REJECTED
-}
-
-enum RaceResult {
-  WIN
-  LOOSE
-  DRAW
 }
 
 model User {
-  id                   Int                    @id @default(autoincrement())
-  login                String                 @unique()
-  pass                 String
-  Car                  Car[]
-  role                 Role
-  ParticipationRequest ParticipationRequest[]
-}
-
-model Car {
-  id                   Int                    @id @default(autoincrement())
-  desc                 String
-  ownerId              User                   @relation(fields: [userId], references: [id])
-  userId               Int
-  removed              Boolean
-  ParticipationRequest ParticipationRequest[]
-  RaceGrid             RaceGrid[]
+  id       Int        @id @default(autoincrement())
+  login    String     @unique
+  password String
+  bio      String
+  status   UserStatus @default(PENDING)
 }
 
 model Season {
-  id    Int     @id @default(autoincrement())
-  desc  String
-  Stage Stage[]
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String
+  // FIX: on season remove... What about stage?!?!
+  stages      Stage[]
 }
 
 model Stage {
-  id                   Int                    @id @default(autoincrement())
-  season               Season                 @relation(fields: [seasonId], references: [id])
-  seasonId             Int
-  desc                 String
-  events_blocked       Boolean
-  ParticipationRequest ParticipationRequest[]
-  Race                 Race[]
-}
+  id       Int      @id @default(autoincrement())
+  season   Season   @relation(fields: [seasonId], references: [id])
+  date     DateTime
+  location String
 
-model ParticipationRequest {
-  id       Int           @id @default(autoincrement())
-  user     User          @relation(fields: [userId], references: [id])
-  car      Car?          @relation(fields: [carId], references: [id])
-  stage    Stage         @relation(fields: [stageId], references: [id])
-  status   PartReqStatus
-  userId   Int
-  carId    Int?
-  stageId  Int
-  RaceGrid RaceGrid[]
-}
-
-model Race {
-  id       Int        @id @default(autoincrement())
-  stage    Stage      @relation(fields: [stageId], references: [id])
-  stageId  Int
-  RaceGrid RaceGrid[]
-  phase    Int
-}
-
-model RaceGrid {
-  id                     Int                  @id @default(autoincrement())
-  race                   Race                 @relation(fields: [raceId], references: [id])
-  member                 ParticipationRequest @relation(fields: [participationRequestId], references: [id])
-  car                    Car?                 @relation(fields: [carId], references: [id])
-  points                 Int?
-  result                 RaceResult?
-  raceId                 Int
-  participationRequestId Int
-  carId                  Int?
+  seasonId Int
 }
