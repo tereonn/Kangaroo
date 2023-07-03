@@ -43,6 +43,8 @@
     "jest-environment-jsdom": "^29.4.1",
     "jest-environment-node": "^29.4.1",
     "nx": "16.3.2",
+    "openapi-typescript": "^6.2.8",
+    "openapi-typescript-codegen": "^0.24.0",
     "prettier": "^2.6.2",
     "prisma": "^4.16.1",
     "react-refresh": "^0.10.0",
@@ -52,6 +54,7 @@
     "url-loader": "^4.1.1"
   },
   "dependencies": {
+    "@blueprintjs/core": "^5.0.1",
     "@nestjs/common": "^9.1.1",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.1.1",

@@ -48,7 +48,7 @@ export class SeasonDataController {
   @Get()
   @ApiOkResponse({
     description: 'List of created seasons',
-    type: SeasonDTO,
+    type: [SeasonDTO],
   })
   @ApiOperation({
     summary: DOC_DESCR.seasonData.get.summary,
